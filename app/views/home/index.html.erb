@@ -1,0 +1,6 @@
+<div> Les 5 derniers membres inscrits :</div>
+<br>
+<% @users.each do |user| %>
+  <span><%= user.username %></span>
+  <br>
+<% end %>

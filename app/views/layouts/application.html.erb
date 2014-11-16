@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Seemore</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+<div id="user_nav">
+  <% if user_signed_in? %>
+    Bonjour <%= current_user.email %>. Ce n'est pas vous ?
+    <%= link_to "Déconnexion", destroy_user_session_path, :method => :delete %>
+  <% else %>
+    <%= link_to "Inscription", new_user_registration_path %> or <%= link_to "Connexion", new_user_session_path %>
+  <% end %>
+</div>
+<div id="flash_messages">
+  <%= flash[:notice] %>
+  <%= flash[:alert] %>
+</div>
+<%= yield %>
+
+</body>
+</html>

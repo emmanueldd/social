@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :relationships
+
   devise_for :users, path_names: {sign_in: 'connexion', sign_up: 'inscription', sign_out: 'deconnexion'},
   :controllers => { :registrations => "users/registrations" }
   # The priority is based upon order of creation: first created -> highest priority.

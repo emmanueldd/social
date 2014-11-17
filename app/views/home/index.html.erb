@@ -1,6 +1,7 @@
 <div> Les 5 derniers membres inscrits :</div>
 <br>
 <% @users.each do |user| %>
-  <span><%= user.username %></span>
+  <span><%= user.username %> </span>
+  <%= link_to "Follow", relationships_path(:user_id => user), :method => :post %>
   <br>
 <% end %>

@@ -40,4 +40,4 @@ gem 'spring',        group: :development
 
 gem 'devise'
 
-gem 'redis'
+gem 'redis', '3.1.0'

@@ -1,60 +1,22 @@
+require 'pp'
 class RelationshipsController < ApplicationController
-  # follow a user
-  def create(user)
-    $redis.multi do
-      $redis.sadd(self.redis_key(:following), user.id)
-      $redis.sadd(user.redis_key(:followers), self.id)
-    end
+  before_action :set_target
+  def create
+    render template: "relationships/index"
+    current_user.follow!(@user)
   end
 
-  # unfollow a user
-  def destroy(user)
-    $redis.multi do
-      $redis.srem(self.redis_key(:following), user.id)
-      $redis.srem(user.redis_key(:followers), self.id)
-    end
+  def index
+
   end
 
-  # users that self follows
-  def followers
-    user_ids = $redis.smembers(self.redis_key(:followers))
-    User.where(:id => user_ids)
+  def destroy
   end
 
-  # users that follow self
-  def following
-    user_ids = $redis.smembers(self.redis_key(:following))
-    User.where(:id => user_ids)
+  private
+  def set_target
+    @user = User.find(params[:user_id])
   end
 
-  # users who follow and are being followed by self
-  def followed_back
-    user_ids = $redis.sinter(self.redis_key(:following), self.redis_key(:followers))
-    User.where(:id => user_ids)
-  end
 
-  # does the user follow self
-  def followed_by?(user)
-    $redis.sismember(self.redis_key(:followers), user.id)
-  end
-
-  # does self follow user
-  def following?(user)
-    $redis.sismember(self.redis_key(:following), user.id)
-  end
-
-  # number of followers
-  def followers_count
-    $redis.scard(self.redis_key(:followers))
-  end
-
-  # number of users being followed
-  def following_count
-    $redis.scard(self.redis_key(:following))
-  end
-
-  # helper method to generate redis keys
-  def redis_key(str)
-    "user:#{self.id}:#{str}"
-  end
 end
